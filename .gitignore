@@ -1,0 +1,99 @@
+# Resonance Tech — standard .gitignore
+# Copy file này vào root mỗi repo, rename thành .gitignore
+
+# ===== OS =====
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# ===== Editor / IDE =====
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# ===== Secrets — KHÔNG BAO GIỜ commit =====
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.cert
+credentials.json
+secrets.json
+.secrets/
+
+# ===== Large binary files (dùng Google Drive thay vì git) =====
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+*.aac
+*.flac
+*.psd
+*.ai
+*.sketch
+*.fig
+*.zip
+*.tar.gz
+*.dmg
+
+# ===== Node / JavaScript =====
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+.npm/
+.pnp.*
+
+# ===== Build output =====
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.vite/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# ===== Logs =====
+logs/
+*.log
+
+# ===== Temporary =====
+tmp/
+temp/
+.tmp/
+
+# ===== AI tool caches =====
+.claude/
+.claude-cache/
+
+# ===== Recordings / Meetings (always to Drive) =====
+**/Recordings/
+**/recordings/
+**/Meeting/Recordings/
