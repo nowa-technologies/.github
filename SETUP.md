@@ -97,8 +97,8 @@ github.com
 
 Clone workspace của bạn:
 ```bash
-git clone git@github.com:nowa-technologies/<your-firstname>-workspace.git
-cd <your-firstname>-workspace
+git clone git@github.com:nowa-technologies/personal-workspace-<your-firstname>.git
+cd personal-workspace-<your-firstname>
 ```
 
 Nếu thành công → setup OK ✓
@@ -118,7 +118,7 @@ gh auth refresh -s admin:public_key
 
 → Kiểm tra internet. Nếu OK, thử HTTPS thay vì SSH:
 ```bash
-git clone https://github.com/nowa-technologies/<your-firstname>-workspace.git
+git clone https://github.com/nowa-technologies/personal-workspace-<your-firstname>.git
 ```
 
 ### "fatal: Authentication failed"

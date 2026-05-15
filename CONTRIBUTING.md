@@ -23,7 +23,7 @@ nowa-technologies/
 ├── rt-organizational-foundation       ← Org info, structure, mission (mọi người read)
 ├── nowa-org-knowledge-hub             ← NOWA product knowledge hub (mọi người read)
 ├── nowa-mkt-pre-launch-ads-2026       ← Marketing campaign 2026 (marketing own)
-├── <firstname>-workspace              ← Personal workspace của bạn (private)
+├── personal-workspace-<firstname>              ← Personal workspace của bạn (private)
 └── ... (repos khác mỗi team tự tạo theo nhu cầu)
 ```
 
@@ -47,7 +47,7 @@ nowa-technologies/
 
 ### 1.3 Personal workspace
 
-Mỗi member có 1 workspace riêng: `nowa-technologies/<firstname>-workspace`.
+Mỗi member có 1 workspace riêng: `nowa-technologies/personal-workspace-<firstname>`.
 
 - Private — chỉ bạn + `@owners` thấy
 - Bạn là Admin — full control
@@ -61,7 +61,7 @@ Mỗi repo có **1 task owner** = người duy nhất merge được vào `main`
 
 | Loại repo | Task owner |
 |---|---|
-| Personal workspace `<firstname>-workspace` | Bạn |
+| Personal workspace `personal-workspace-<firstname>` | Bạn |
 | Team repos (vd `nowa-mkt-pre-launch-ads-2026`) | Team lead / PIC project |
 | Shared repos (`knowledge-hub`, `agent-skills`) | `@owners` (Andy, Grace) |
 
