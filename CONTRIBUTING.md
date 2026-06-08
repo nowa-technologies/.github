@@ -21,7 +21,7 @@ nowa-technologies/
 ├── .github                            ← Org profile + CONTRIBUTING (this file)
 ├── rt-agent-skills                    ← AI skills là company asset (mọi người read)
 ├── rt-organizational-foundation       ← Org info, structure, mission (mọi người read)
-├── nowa-org-knowledge-hub             ← NOWA product knowledge hub (mọi người read)
+├── nowa-os-knowledge-hub             ← NOWA product knowledge hub (mọi người read)
 ├── nowa-mkt-pre-launch-ads-2026       ← Marketing campaign 2026 (marketing own)
 ├── personal-workspace-<firstname>     ← Personal workspace của bạn (private)
 └── ... (repos khác mỗi team tự tạo theo nhu cầu)
@@ -153,7 +153,7 @@ Cho thay đổi nhỏ (typo, edit 1 dòng):
 |---|---|---|
 | Scope (level 1) | `rt-` (RT-wide), `nowa-`, `teampal-`, `cross-`, **`{firstname}-`** (personal project) | ✓ |
 | Team abbrev (level 2) | `mkt`, `des`, `ba`, `dev`, `hr` | ✓ (hoặc aspect) |
-| Aspect (level 2 nếu không team) | `org`, `ops`, `fin`, `legal`, `tools` | ✓ (hoặc team) |
+| Aspect (level 2 nếu không team) | `org`, `os`, `fin`, `legal`, `tools` | ✓ (hoặc team) |
 | Project (level 3) | kebab-case mô tả | ✓ |
 | Time (level 4) | `2026`, `2026-q2`, `may2026` | Optional (khi time-bounded) |
 
@@ -163,9 +163,9 @@ Cho thay đổi nhỏ (typo, edit 1 dòng):
 |---|---|
 | `nowa-mkt-pre-launch-ads-2026` | NOWA × marketing × pre-launch-ads × 2026 |
 | `rt-agent-skills` | RT-wide × skills (scope skip cho cực kỳ general repos) |
-| `nowa-org-knowledge-hub` | NOWA × org-level × knowledge-hub |
+| `nowa-os-knowledge-hub` | NOWA × org-level × knowledge-hub |
 | `nowa-des-brand-guideline` | NOWA × design × brand-guideline (evergreen) |
-| `nowa-ops-customer-support` | NOWA × operations aspect × customer-support |
+| `nowa-os-customer-support` | NOWA × operating system aspect × customer-support |
 | `andy-dev-side-tool` | Andy personal × dev × side-tool |
 | `grace-pm-tool` | Grace personal × project management × tool |
 | `cross-mkt-channel-strategy` | Cross-product × marketing × channel-strategy |
@@ -262,7 +262,7 @@ amy's work
 | Variant của LP hiện tại | **Folder** trong `{repo}/variants/` |
 | Asset chung được dùng bởi nhiều projects | **Repo riêng** (vd `nowa-des-brand-guideline`) |
 | Skill mới cho AI agents | **Folder** trong `rt-agent-skills/skill-name/` |
-| Document evergreen về product | **Folder** trong `nowa-org-knowledge-hub/` |
+| Document evergreen về product | **Folder** trong `nowa-os-knowledge-hub/` |
 | Internal tool standalone | **Repo mới** (vd `rt-tools-deploy-helper`) |
 | Personal/side project có deliverable | **Repo riêng** `{firstname}-{team}-{project}` |
 
@@ -332,7 +332,7 @@ Required cho mọi repo.
 
 ### 6.2 README per folder (knowledge-hub, agent-skills)
 
-Trong các repo content-heavy (`nowa-org-knowledge-hub`, `rt-agent-skills`,...), **mỗi folder có 1 `README.md`** để navigate. Mục đích: cả human + AI hiểu folder này là gì khi mở.
+Trong các repo content-heavy (`nowa-os-knowledge-hub`, `rt-agent-skills`,...), **mỗi folder có 1 `README.md`** để navigate. Mục đích: cả human + AI hiểu folder này là gì khi mở.
 
 Pattern:
 ```markdown
