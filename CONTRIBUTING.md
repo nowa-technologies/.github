@@ -23,15 +23,21 @@ nowa-technologies/
 ├── rt-organizational-foundation       ← Org info, structure, mission (mọi người read)
 ├── nowa-org-knowledge-hub             ← NOWA product knowledge hub (mọi người read)
 ├── nowa-mkt-pre-launch-ads-2026       ← Marketing campaign 2026 (marketing own)
-├── personal-workspace-<firstname>              ← Personal workspace của bạn (private)
+├── personal-workspace-<firstname>     ← Personal workspace của bạn (private)
 └── ... (repos khác mỗi team tự tạo theo nhu cầu)
 ```
+
+**Quy tắc về scope repo**:
+- Personal workspace: **chỉ docs/notes**, không chứa project có deliverable
+- Bất kỳ project (cá nhân hay team): repo riêng theo naming convention
+- Khi nghi ngờ: separate repo (tránh nest project trong personal workspace)
 
 **Future repos** mỗi team có thể tạo theo nhu cầu:
 - `nowa-mkt-ads-tracking-2026` (marketing automation)
 - `nowa-des-brand-guideline` (design, evergreen)
 - `nowa-ba-product-specs` (BA)
-- ... theo naming convention: `{scope}-{team}-{project}[-{time}]`
+- `andy-dev-side-tool` (Andy's personal dev project)
+- ... theo naming convention: xem §4
 
 ### 1.2 Teams
 
@@ -51,7 +57,21 @@ Mỗi member có 1 workspace riêng: `nowa-technologies/personal-workspace-<firs
 
 - Private — chỉ bạn + `@owners` thấy
 - Bạn là Admin — full control
-- Dùng làm: draft, notes, AI conversations, side projects, backup local work
+
+**Dùng cho**:
+- 📝 Draft documents trước khi share team
+- 💭 Notes, research, AI conversations
+- 📚 Lưu trữ tài liệu cá nhân liên quan org
+- ☁️ Backup local work lên cloud
+- 🤖 Working memory cho AI agents của bạn
+
+**KHÔNG dùng cho**:
+- ❌ Private/personal projects (code, app dev, experiments có deliverable) → tạo repo riêng theo naming convention `{firstname}-{team-or-aspect}-{project}`
+  - Vd: `andy-dev-side-tool`, `grace-pm-tool`
+- ❌ Code projects → repo riêng
+- ❌ Bất kỳ deliverable có scope project riêng → repo độc lập
+
+→ **Lý do**: AI agents đọc workspace như **personal context store** (docs/notes), không expect parse code structure phức tạp. Mix project vào sẽ làm agent confuse về scope.
 
 ---
 
@@ -62,13 +82,14 @@ Mỗi repo có **1 task owner** = người duy nhất merge được vào `main`
 | Loại repo | Task owner |
 |---|---|
 | Personal workspace `personal-workspace-<firstname>` | Bạn |
+| Personal projects `<firstname>-<team>-<project>` | Bạn |
 | Team repos (vd `nowa-mkt-pre-launch-ads-2026`) | Team lead / PIC project |
 | Shared repos (`knowledge-hub`, `agent-skills`) | `@owners` (Andy, Grace) |
 
 **Workflow ý nghĩa**:
 - Bạn có thể tạo PR vào bất kỳ repo nào bạn có access
 - Nhưng chỉ task owner mới merge được
-- Trên personal workspace, bạn là task owner → tự merge được mọi PR của mình
+- Trên personal workspace + personal projects, bạn là task owner → tự merge được mọi PR của mình
 
 ---
 
@@ -122,60 +143,160 @@ Cho thay đổi nhỏ (typo, edit 1 dòng):
 
 ---
 
-## 4. Naming conventions (quick reference)
+## 4. Naming conventions
 
-**Source of truth**: [naming-conventions.md](../../structure/naming-conventions.md) — đọc khi cần deep-dive.
+### 4.1 Repo name
 
-### Repo name
+**Pattern**: `{scope}-{team-or-aspect}-{project}[-{time}]`
 
-Pattern: `{scope}-{team-or-aspect}-{project}[-{time}]`
+| Level | Options | Required |
+|---|---|---|
+| Scope (level 1) | `rt-` (RT-wide), `nowa-`, `teampal-`, `cross-`, **`{firstname}-`** (personal project) | ✓ |
+| Team abbrev (level 2) | `mkt`, `des`, `ba`, `dev`, `hr` | ✓ (hoặc aspect) |
+| Aspect (level 2 nếu không team) | `org`, `ops`, `fin`, `legal`, `tools` | ✓ (hoặc team) |
+| Project (level 3) | kebab-case mô tả | ✓ |
+| Time (level 4) | `2026`, `2026-q2`, `may2026` | Optional (khi time-bounded) |
 
-| Level | Options |
+**Examples**:
+
+| Repo | Phân tích |
 |---|---|
-| Scope (level 1) | `rt-` (company-wide), `nowa-`, `teampal-`, `cross-` |
-| Team abbrev (level 2) | `mkt`, `des`, `ba`, `dev`, `hr` |
-| Aspect (level 2 nếu không team) | `org`, `ops`, `fin`, `legal`, `tools` |
-| Project (level 3) | kebab-case mô tả |
-| Time (level 4 optional) | `2026`, `2026-q2`, `may2026` |
+| `nowa-mkt-pre-launch-ads-2026` | NOWA × marketing × pre-launch-ads × 2026 |
+| `rt-agent-skills` | RT-wide × skills (scope skip cho cực kỳ general repos) |
+| `nowa-org-knowledge-hub` | NOWA × org-level × knowledge-hub |
+| `nowa-des-brand-guideline` | NOWA × design × brand-guideline (evergreen) |
+| `nowa-ops-customer-support` | NOWA × operations aspect × customer-support |
+| `andy-dev-side-tool` | Andy personal × dev × side-tool |
+| `grace-pm-tool` | Grace personal × project management × tool |
+| `cross-mkt-channel-strategy` | Cross-product × marketing × channel-strategy |
+
+### 4.2 Branch name
+
+**Pattern**: `{team-abbrev}/{your-firstname}/{short-description}`
+
+**Optional với type**: `{team-abbrev}/{your-firstname}/{type}/{short-description}`
+
+**Type vocabulary**: `feature`, `fix`, `content`, `docs`, `refactor`, `experiment`
+
+**Rules**:
+- ✅ kebab-case (lowercase, hyphens)
+- ✅ Max 5 từ trong `short-description`
+- ✅ Author = firstname (khớp với personal workspace name)
+- ❌ Không underscore, không camelCase, không spaces
+- ❌ Không tên ambiguous: `update`, `fix`, `change` (phải có context)
 
 **Examples**:
-- `nowa-mkt-pre-launch-2026` (NOWA × marketing × pre-launch × 2026)
-- `rt-agent-skills` (RT-wide, không team)
-- `nowa-org-knowledge-hub` (NOWA × org-level × knowledge-hub)
-- `nowa-des-brand-guideline` (NOWA × design × brand-guideline, evergreen)
+```
+mkt/amy/audience-fintech-lp                      ← Default form
+mkt/amy/feature/audience-fintech-lp              ← With type
+mkt/amy/content/fintech-headline-update          ← Content change
+mkt/amy/fix/mobile-overflow-on-fintech-lp        ← Bug fix
+mkt/amy/experiment/variant-b-pricing-section     ← A/B test
+des/grace/refactor/component-library-tokens      ← Design refactor
+dev/huyle/fix/auth-flow-edge-case                ← Dev fix
+```
 
-### Branch name
-
-Pattern: `{team-abbrev}/{your-firstname}/{short-description}`
-
-Optional với type: `{team-abbrev}/{your-firstname}/{type}/{short-description}`
-- Type vocabulary: `feature`, `fix`, `content`, `docs`, `refactor`, `experiment`
-
-**Examples**:
-- `mkt/amy/audience-fintech-lp`
-- `des/grace/feature/logo-refresh`
-- `dev/john/fix/login-flow`
-
-### Other
+### 4.3 File & folder
 
 | Item | Convention | Example |
 |---|---|---|
-| Folder | `lowercase`, kebab-case | `landing-pages/` |
-| File `.md` | `kebab-case.md` | `current-plan.md` |
-| Special files | `README.md` (per folder = navigation), `LICENSE` | |
-| Commit message | Imperative, capital first, no period | "Add Q2 launching plan" |
-| PR title | `{Team}: {Action} {what}` | "Marketing: Add fintech LP variant" |
+| Folder | `lowercase`, kebab-case | `landing-pages/`, `design-assets/` |
+| File `.md` | `kebab-case.md` | `current-plan.md`, `brand-guideline.md` |
+| Special files | `README.md`, `LICENSE` (uppercase convention) | |
+| Code files | Follow language convention | `.ts` kebab/camel, `.py` snake_case |
 
-### Khi nào tạo repo mới vs folder?
+### 4.4 Commit message
 
-**Default: folder, không tạo repo mới.** Tạo repo mới chỉ khi:
-- Team khác own
-- Release/deploy cycle khác
-- Access permission khác (vd confidential)
-- Sẽ public/share external
-- >2GB hoặc >500 files
+**Format**: `{Verb in imperative} {what changed}`
 
-Xem decision tree đầy đủ trong [naming-conventions.md §2](../../structure/naming-conventions.md).
+✅ **Good**:
+```
+Add Q3 launching plan for fintech audience
+Fix typo in brand guideline
+Update README with new naming convention
+Refactor component library structure
+```
+
+❌ **Bad**:
+```
+updated stuff
+fix
+WIP
+changes from yesterday
+my work
+```
+
+**Rules**: Imperative tense ("Add", không "Added"), first letter capital, max ~50 ký tự, no period at end.
+
+### 4.5 PR title
+
+**Format**: `{Team}: {Action} {what}`
+
+✅ **Good**:
+```
+Marketing: Add fintech audience LP variant
+Design: Refactor brand color tokens
+BA: Update API spec for v2 endpoints
+```
+
+❌ **Bad**:
+```
+update
+my PR
+new stuff
+amy's work
+```
+
+### 4.6 Khi nào tạo repo mới vs folder trong repo có sẵn?
+
+**Default: folder, không tạo repo mới.** Repo proliferation khó manage.
+
+**Decision table — 10 situations**:
+
+| Tình huống | Decision |
+|---|---|
+| Sub-section của project hiện tại, cùng team, cùng release cycle | **Folder** |
+| Sub-project rõ ràng, cùng team, cùng release | **Folder** với name rõ ràng |
+| Project mới, team khác own | **Repo mới** |
+| Campaign năm sau (vd `nowa-mkt-launch-2027`) | **Repo mới** (time-bounded) |
+| Variant của LP hiện tại | **Folder** trong `{repo}/variants/` |
+| Asset chung được dùng bởi nhiều projects | **Repo riêng** (vd `nowa-des-brand-guideline`) |
+| Skill mới cho AI agents | **Folder** trong `rt-agent-skills/skill-name/` |
+| Document evergreen về product | **Folder** trong `nowa-org-knowledge-hub/` |
+| Internal tool standalone | **Repo mới** (vd `rt-tools-deploy-helper`) |
+| Personal/side project có deliverable | **Repo riêng** `{firstname}-{team}-{project}` |
+
+**Re-evaluate khi nào split folder thành repo riêng**:
+- Folder grow >500 files hoặc >500MB
+- Có team khác muốn own folder đó
+- Cần CI/CD riêng cho folder
+- Cần public folder đó
+
+### 4.7 Sub-project structure (folders inside repo)
+
+**Khi 1 repo chứa nhiều sub-projects/variants**, organize theo folder:
+
+```
+nowa-mkt-pre-launch-ads-2026/
+├── README.md                  ← Navigation
+├── shared/                    ← Components, styles, assets dùng chung
+│   ├── components/
+│   ├── styles/
+│   └── assets/                ← Logo, icons (ảnh nhỏ optimized)
+├── audiences/                 ← Mỗi audience 1 folder
+│   ├── fintech/
+│   │   ├── index.html
+│   │   ├── content.md         ← Copy/text
+│   │   ├── layout.css         ← Layout-specific
+│   │   └── logic.js           ← Form behavior, tracking
+│   ├── ecommerce/
+│   └── saas/
+├── experiments/               ← A/B variants
+│   └── variant-b-pricing/
+└── deploy.config.json
+```
+
+→ Folder organize theo **dimension chính** (audience, type, time) + **type of change** (content/layout/logic).
 
 ---
 
@@ -207,7 +328,7 @@ Nếu lỡ commit secret → báo `@owners` ngay, rotate credentials.
 
 Giới thiệu tổng quan repo: purpose, status, owner, structure, how to use.
 
-Required cho mọi repo. Template trong `nowa-technologies/.github/templates/`.
+Required cho mọi repo.
 
 ### 6.2 README per folder (knowledge-hub, agent-skills)
 
@@ -281,4 +402,4 @@ Convention này là **living document**. Nếu thấy chỗ nào cần improve:
 ---
 
 Owner: `@nowa-technologies/owners`
-Last updated: 2026-05-12
+Last updated: 2026-05-19
