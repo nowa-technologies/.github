@@ -1,0 +1,98 @@
+name: Auto-grant admin to repo creator
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # Every 10 minutes
+  workflow_dispatch:           # Allow manual trigger for testing
+
+jobs:
+  grant-admin:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Audit recent repos and grant admin to creators
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+          ORG: nowa-technologies
+        run: |
+          set -e
+          
+          # Lookback window: 15 minutes (cron runs every 10 min, with buffer)
+          LOOKBACK_MIN=15
+          
+          # On manual trigger via workflow_dispatch: audit all repos
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual trigger — auditing ALL repos"
+            LOOKBACK_MIN=999999
+          else
+            echo "Cron trigger — auditing repos from last ${LOOKBACK_MIN} minutes"
+          fi
+          
+          # Compute cutoff timestamp
+          CUTOFF=$(date -u -d "${LOOKBACK_MIN} minutes ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-${LOOKBACK_MIN}M +%Y-%m-%dT%H:%M:%SZ)
+          echo "Cutoff: $CUTOFF"
+          
+          # List org repos sorted by creation date, take recent ones
+          REPOS=$(gh api "orgs/$ORG/repos" --paginate --jq ".[] | select(.created_at > \"$CUTOFF\") | .name")
+          
+          if [ -z "$REPOS" ]; then
+            echo "No new repos in lookback window."
+            exit 0
+          fi
+          
+          GRANTED=0
+          
+          for REPO in $REPOS; do
+            echo ""
+            echo "--- Checking $REPO ---"
+            
+            # Skip system repos
+            if [ "$REPO" = ".github" ]; then
+              echo "  Skip: system repo"
+              continue
+            fi
+            
+            # Get first commit author (likely creator)
+            CREATOR=$(gh api "repos/$ORG/$REPO/commits" --paginate --jq '.[].author.login' 2>/dev/null | tail -1 || echo "")
+            
+            if [ -z "$CREATOR" ] || [ "$CREATOR" = "null" ]; then
+              echo "  Skip: no commits yet"
+              continue
+            fi
+            
+            # Skip bot accounts
+            if [[ "$CREATOR" == *"[bot]"* ]]; then
+              echo "  Skip: bot account ($CREATOR)"
+              continue
+            fi
+            
+            # Skip org owners (auto have admin)
+            if [ "$CREATOR" = "GracefromRT" ] || [ "$CREATOR" = "hieptran1401" ]; then
+              echo "  Skip: org owner ($CREATOR auto-admin)"
+              continue
+            fi
+            
+            # Verify creator is org member
+            if ! gh api "orgs/$ORG/members/$CREATOR" > /dev/null 2>&1; then
+              echo "  Skip: $CREATOR not org member"
+              continue
+            fi
+            
+            # Check current permission
+            PERM=$(gh api "repos/$ORG/$REPO/collaborators/$CREATOR/permission" --jq '.role_name' 2>/dev/null || echo "")
+            
+            if [ "$PERM" = "admin" ]; then
+              echo "  ✓ $CREATOR already admin"
+              continue
+            fi
+            
+            # Grant admin
+            echo "  🔧 Granting admin: $CREATOR (was: $PERM)"
+            gh api "repos/$ORG/$REPO/collaborators/$CREATOR" --method PUT -f permission="admin"
+            GRANTED=$((GRANTED + 1))
+          done
+          
+          echo ""
+          echo "==================="
+          echo "Total grants: $GRANTED"
