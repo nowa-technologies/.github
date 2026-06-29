@@ -378,6 +378,32 @@ Workflow cũ vẫn work bình thường:
 - Mở Claude Code
 - Làm việc, commit, push
 
+### 7.4 Để AI agents tự follow naming convention
+
+Để Claude / AI agents của mọi người **tự follow** convention §4 khi tạo repo, mỗi member thêm block dưới vào `~/.claude/CLAUDE.md` (rule global, áp mọi project) — hoặc per-project `/CLAUDE.md`:
+
+```
+## GitHub repo creation in nowa-technologies org
+Always follow naming convention from:
+https://github.com/nowa-technologies/.github/blob/main/CONTRIBUTING.md §4
+Pattern: {scope}-{team-or-aspect}-{project}[-{time}]
+- scope: rt- (RT-wide), nowa-, teampal-, cross-, or {firstname}- (personal)
+- team: mkt, des, ba, dev, hr
+- aspect (when no team): org, os, fin, legal, tools
+- project: kebab-case
+- time (optional): 2026, 2026-q2, may2026
+Special:
+- personal-workspace-{firstname} (workspace pattern, không follow main rule)
+- Personal workspace: chỉ docs/notes, không project có deliverable
+- Personal projects: separate repo theo pattern
+Before creating any repo:
+1. Validate name matches pattern
+2. If unsure, ask user before creating
+3. Reference CONTRIBUTING.md for examples
+```
+
+→ Lý do: AI agent local không tự đọc repo org mỗi lần; có rule trong `CLAUDE.md` thì agent luôn có context → không tạo repo sai tên.
+
 ---
 
 ## 8. Khi nào hỏi help
