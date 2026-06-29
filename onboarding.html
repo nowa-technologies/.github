@@ -218,7 +218,7 @@
               <tr><td><strong>Team <code>all-staff</code></strong></td><td>Read các shared repo (knowledge hub, agent-skills, org foundation) + push hub theo CODEOWNERS</td></tr>
               <tr><td><strong>Team chức năng</strong></td><td>Theo vai trò: <code>marketing</code> / <code>design</code> / <code>business-analyst</code> / <code>engineering</code> / <code>hr</code> / <code>customer-support</code></td></tr>
               <tr><td><strong>Personal workspace</strong></td><td>Repo private <code>personal-workspace-&lt;tên&gt;</code> — bạn là Admin, full control</td></tr>
-              <tr><td><strong>CODEOWNER</strong></td><td>Nếu bạn own 1 workstream trong hub → là người duyệt PR đụng folder đó</td></tr>
+              <tr><td><strong>CODEOWNER</strong></td><td>Nếu bạn own 1 workstream trong hub → duyệt PR người khác đụng folder đó (không tự duyệt PR của chính mình → cần co-owner)</td></tr>
             </tbody>
           </table>
           <div class="callout callout-info">
@@ -330,6 +330,10 @@ gh auth status   # verify</code></pre>
             </tbody>
           </table>
           <p>Trên personal workspace/project, bạn là task owner → tự merge mọi PR của mình (hoặc push thẳng main).</p>
+          <div class="callout callout-info">
+            <strong>ℹ️ Hub khác một chút — duyệt theo folder, không phải 1 task owner</strong>
+            <p>Trong <code>nowa-os-knowledge-hub</code>, quyền merge gắn theo <strong>CODEOWNER của từng folder</strong> + <strong>auto-merge</strong>, không phải một task owner duy nhất. Bạn <strong>không thể tự approve PR của mình</strong> (luật GitHub) → cần co-owner duyệt. Chi tiết: tab <strong>📚 Knowledge Hub → Merge &amp; duyệt PR</strong>.</p>
+          </div>
         </section>
       </div>
 
@@ -342,7 +346,7 @@ git checkout -b &lt;team&gt;/&lt;tên&gt;/&lt;short-description&gt;   # vd: mkt/
 # ... làm việc ...
 git add . && git commit -m "Add ..."
 git push -u origin &lt;team&gt;/&lt;tên&gt;/&lt;short-description&gt;
-# → tạo Pull Request trên GitHub web → đợi task owner review + merge
+# → tạo PR → bật "Enable auto-merge" → CODEOWNER approve (PR tự merge khi pass)
 git checkout main && git pull          # sau khi merged</code></pre>
           <h3>Trong personal workspace</h3>
           <p>Free style hơn: push thẳng <code>main</code> được (bạn là task owner), commit không cần quá formal.</p>
@@ -469,7 +473,8 @@ Before creating any repo:
       <a data-sub="hub-meeting">Meeting notes</a>
       <a data-sub="hub-archive">Archive</a>
       <a data-sub="hub-navigate">Find things</a>
-      <a data-sub="hub-review">Review PRs</a>
+      <a data-sub="hub-merge">Merge &amp; duyệt PR</a>
+      <a data-sub="hub-owners">Ai own folder nào</a>
       <a data-sub="hub-faq">FAQ</a>
     </aside>
     <div class="content">
@@ -573,20 +578,88 @@ Before creating any repo:
         </section>
       </div>
 
-      <div class="subpage" id="sub-hub-review">
+      <div class="subpage" id="sub-hub-merge">
         <section class="section">
-          <div class="section-pixel">REVIEWER</div>
-          <h2>Review PRs</h2>
-          <p>Khi member promote file, PR auto-tag CODEOWNERS theo path. Bạn nhận noti → review trong <strong>24h</strong> business.</p>
-          <h3>Checklist review</h3>
+          <div class="section-pixel">MERGE FLOW</div>
+          <h2>PR của bạn được merge thế nào</h2>
+          <p>Hub được branch-protect: <strong>không ai push thẳng <code>main</code></strong>. Mọi thay đổi đi qua PR và cần <strong>1 approval từ CODEOWNER</strong> của folder bị đụng. Skill <code>/nowa-*</code> tự mở PR cho bạn; làm tay thì theo flow ở tab GitHub Org.</p>
+          <h3>Các bước (khi bạn tạo PR)</h3>
+          <ol>
+            <li>Tạo branch + PR (skill tự làm, hoặc <code>git push</code> rồi mở PR trên web).</li>
+            <li>PR <strong>auto-tag CODEOWNER</strong> của folder bạn đụng (theo <code>.github/CODEOWNERS</code>).</li>
+            <li>Bấm <strong>"Enable auto-merge"</strong> ngay trên PR → PR sẽ <strong>tự động merge</strong> khi đủ 1 approval + CI lint pass. Khỏi canh bấm nút.</li>
+            <li>Một co-owner của folder vào <strong>Approve</strong> → auto-merge chạy → branch tự xoá.</li>
+          </ol>
+          <div class="callout callout-warning">
+            <strong>⚠️ Bạn KHÔNG thể tự approve PR của chính mình</strong>
+            <p>Đây là luật cứng của GitHub — kể cả khi bạn là CODEOWNER của folder đó. Luôn cần <strong>một co-owner khác</strong> của folder vào approve. Vì vậy mỗi workstream nên có ≥2 owner.</p>
+          </div>
+          <h3>Workstream chỉ có 1 owner</h3>
+          <p>Vài workstream hiện chỉ 1 owner (vd <code>expert</code>, <code>legal</code> — đều Grace). PR của chính owner đó không ai approve được → <strong>ping Grace/Andy (admin) để admin-merge</strong>. Nếu workstream của bạn hay kẹt kiểu này, đề xuất thêm co-owner.</p>
+          <h3>Nếu bạn LÀ owner — review trong 24h</h3>
+          <p>Khi được tag, review trong <strong>24h</strong> business. Checklist nhanh:</p>
           <ul>
-            <li><strong>Right destination?</strong> Path đúng workstream + sub-folder (outbound/inbound/contracts)</li>
+            <li><strong>Đúng chỗ?</strong> Path đúng workstream + sub-folder (outbound/inbound/contracts)</li>
             <li><strong>Naming?</strong> <code>YYYY-MM-DD_slug.ext</code>, partner-original suffix nếu inbound</li>
-            <li><strong>Sensitive routing?</strong> Equity/shareholder/finance → flag, nên ở repo <code>-private</code></li>
+            <li><strong>Sensitive?</strong> Equity/shareholder/finance → 🛑 request changes, route repo <code>-private</code></li>
             <li><strong>Bilingual (Permill)?</strong> EN-CN cả 2 section</li>
-            <li><strong>Content reasonable?</strong> Quick scan (meeting note có decisions/actions; contract có chữ ký)</li>
+            <li><strong>Content hợp lý?</strong> Scan nhanh (meeting note có decisions/actions; contract có chữ ký)</li>
           </ul>
-          <p>Decision: ✅ Approve / 💬 Comment / 🛑 Request changes → merge (squash + delete branch) khi clean.</p>
+          <p>✅ Approve → auto-merge tự lo phần còn lại. 💬 Comment / 🛑 Request changes nếu chưa ổn.</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-owners">
+        <section class="section">
+          <div class="section-pixel">CODEOWNERS</div>
+          <h2>Ai own folder nào</h2>
+          <p>Nguồn chuẩn: <code>.github/CODEOWNERS</code> trong hub. PR đụng path nào thì cần 1 approval từ owner của path đó — đụng nhiều path có thể cần nhiều owner approve. Owner đầu tiên thường là người chịu trách nhiệm chính.</p>
+          <h4>Workstreams</h4>
+          <table>
+            <thead><tr><th>Folder</th><th>Owners</th></tr></thead>
+            <tbody>
+              <tr><td><code>workstreams/permill-hardware/</code></td><td>Grace · Huy</td></tr>
+              <tr><td><code>workstreams/permill-marketing/</code></td><td>Amy · Grace</td></tr>
+              <tr><td><code>workstreams/expert/</code></td><td>Grace <em>(solo)</em></td></tr>
+              <tr><td><code>workstreams/fulfillment/</code></td><td>Grace · Nghia</td></tr>
+              <tr><td><code>workstreams/legal/</code></td><td>Grace <em>(solo)</em></td></tr>
+              <tr><td><code>workstreams/compliance/</code></td><td>Grace · Huy</td></tr>
+              <tr><td><code>workstreams/nowa-weekly/</code></td><td>Grace · Nghia</td></tr>
+              <tr><td><code>workstreams/product-dev/</code></td><td>Andy · Huy</td></tr>
+              <tr><td><code>workstreams/product-design/</code></td><td>Nguyen N · Huy</td></tr>
+              <tr><td><code>workstreams/product-ba/</code></td><td>Huy · Grace · Nghia</td></tr>
+              <tr><td><code>workstreams/marketing/</code></td><td>Amy · Tuan</td></tr>
+              <tr><td><code>workstreams/finance/</code></td><td>Daniel · Grace</td></tr>
+              <tr><td><code>workstreams/cs/</code></td><td>Grace · Ngân</td></tr>
+            </tbody>
+          </table>
+          <h4>Product & brand</h4>
+          <table>
+            <thead><tr><th>Path</th><th>Owners</th></tr></thead>
+            <tbody>
+              <tr><td><code>product/</code> (default)</td><td>Andy · Nguyen N · Huy · Grace</td></tr>
+              <tr><td><code>product/PRD.md</code></td><td>Huy · Andy</td></tr>
+              <tr><td><code>product/DESIGN.md</code></td><td>Nguyen N</td></tr>
+              <tr><td><code>product/product-roadmap.md</code></td><td>Andy · Grace</td></tr>
+              <tr><td><code>brand/</code></td><td>Nguyen N · Amy</td></tr>
+            </tbody>
+          </table>
+          <h4>Governance & engine</h4>
+          <table>
+            <thead><tr><th>Path</th><th>Owners</th></tr></thead>
+            <tbody>
+              <tr><td><code>README.md</code> · <code>CLAUDE.md</code> · <code>.github/</code></td><td>Grace · Andy <em>(double-review)</em></td></tr>
+              <tr><td><code>_playbook/</code></td><td>Grace · Huy</td></tr>
+              <tr><td><code>partner-index/</code></td><td>Grace · Huy</td></tr>
+              <tr><td><code>scripts/</code></td><td>Andy · Grace</td></tr>
+              <tr><td><code>daily/</code> · <code>status/</code> · <code>next-day-tasks/</code> · <code>*/snapshots/</code></td><td>Grace <em>(auto-gen — bot push)</em></td></tr>
+              <tr><td>Path chưa list (default <code>*</code>)</td><td>Grace</td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-info">
+            <strong>ℹ️ Thêm/đổi owner?</strong>
+            <p>Sửa <code>.github/CODEOWNERS</code> qua PR (cần Grace + Andy duyệt vì <code>.github/</code> double-review). Tạo workstream/folder mới → thêm dòng CODEOWNERS trong CÙNG PR đó.</p>
+          </div>
         </section>
       </div>
 
