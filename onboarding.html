@@ -412,6 +412,29 @@ git checkout main && git pull          # sau khi merged</code></pre>
             <li><strong>Claude.ai qua MCP</strong> — Settings → MCP connectors → GitHub → auth org → chat trực tiếp với repo.</li>
             <li><strong>Local Claude Code</strong> — clone repo, mở Claude Code, làm việc, commit, push.</li>
           </ul>
+          <h3>⚙️ Bắt buộc: để AI tự follow naming convention</h3>
+          <p>Để Claude / AI agents của bạn <strong>tự tuân theo</strong> convention khi tạo repo trong org, thêm block dưới vào file <code>~/.claude/CLAUDE.md</code> (rule global, áp mọi project) — hoặc <code>/CLAUDE.md</code> của từng project:</p>
+          <pre><code>## GitHub repo creation in nowa-technologies org
+Always follow naming convention from:
+https://github.com/nowa-technologies/.github/blob/main/CONTRIBUTING.md §4
+Pattern: {scope}-{team-or-aspect}-{project}[-{time}]
+- scope: rt- (RT-wide), nowa-, teampal-, cross-, or {firstname}- (personal)
+- team: mkt, des, ba, dev, hr
+- aspect (when no team): org, os, fin, legal, tools
+- project: kebab-case
+- time (optional): 2026, 2026-q2, may2026
+Special:
+- personal-workspace-{firstname} (workspace pattern, không follow main rule)
+- Personal workspace: chỉ docs/notes, không project có deliverable
+- Personal projects: separate repo theo pattern
+Before creating any repo:
+1. Validate name matches pattern
+2. If unsure, ask user before creating
+3. Reference CONTRIBUTING.md for examples</code></pre>
+          <div class="callout callout-tip">
+            <strong>💡 Vì sao cần?</strong>
+            <p>Convention này nằm trong <code>CONTRIBUTING.md</code> (human + AI đọc được), nhưng AI agent local của bạn không tự đọc repo org mỗi lần. Thêm vào <code>~/.claude/CLAUDE.md</code> = agent luôn có rule trong context → không tạo repo sai tên.</p>
+          </div>
         </section>
       </div>
 
