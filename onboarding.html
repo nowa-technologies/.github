@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resonance Tech — Onboarding (GitHub Org + Knowledge Hub)</title>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700&family=Tiny5&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-coral-flame: #ef493d;
+    --color-coral-glow: #f87a71;
+    --color-coral-blush: #fececa;
+    --color-ember-deep: #b9271c;
+    --color-deep-ink: #161c24;
+    --color-ink-charcoal: #212b36;
+    --color-slate-mid: #454f5b;
+    --color-mist-body: #637381;
+    --color-cloud-border: #c4cdd5;
+    --color-chalk-surface: #dfe3e8;
+    --color-warm-parchment: #edeae2;
+    --color-ghost-white: #f4f6f8;
+    --color-pure-white: #ffffff;
+    --color-amber-signal: #ffc107;
+    --color-leaf-success: #54d62c;
+    --font-display: 'Onest', system-ui, -apple-system, sans-serif;
+    --font-body: 'Noto Sans', system-ui, -apple-system, sans-serif;
+    --font-pixel: 'Tiny5', monospace;
+    --text-caption: 12px; --text-body-sm: 14px; --text-body: 16px;
+    --text-subheading: 18px; --text-heading-sm: 20px; --text-heading: 24px;
+    --text-heading-lg: 32px; --text-display: 44px;
+    --radius-tag: 8px; --radius-card: 16px; --radius-large: 24px; --radius-pill: 9999px;
+    --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px;
+    --space-6:24px; --space-8:32px; --space-10:40px; --space-12:48px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--color-warm-parchment); color: var(--color-deep-ink); font-size: var(--text-body); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: var(--space-6); }
+
+  /* Hero */
+  .hero { background: var(--color-pure-white); border-radius: var(--radius-large); padding: var(--space-10); margin-bottom: var(--space-6); text-align: center; border: 1px solid var(--color-chalk-surface); position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, var(--color-coral-blush) 0%, transparent 70%); z-index: 0; }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-pixel-label { font-family: var(--font-pixel); font-size: var(--text-caption); letter-spacing: 0.08em; color: var(--color-coral-flame); text-transform: uppercase; margin-bottom: var(--space-3); }
+  .hero h1 { font-family: var(--font-display); font-size: var(--text-display); font-weight: 800; line-height: 1.1; color: var(--color-deep-ink); margin-bottom: var(--space-3); }
+  .hero p { font-size: var(--text-subheading); color: var(--color-slate-mid); max-width: 720px; margin: 0 auto; }
+
+  /* Top tabs (horizontal — major sections) */
+  .tabs-nav { display: flex; gap: var(--space-1); background: var(--color-pure-white); padding: var(--space-2); border-radius: var(--radius-pill); margin-bottom: var(--space-6); overflow-x: auto; border: 1px solid var(--color-chalk-surface); }
+  .tab-btn { flex: 1; background: transparent; border: none; padding: var(--space-3) var(--space-5); border-radius: var(--radius-pill); font-family: var(--font-body); font-size: var(--text-body-sm); font-weight: 600; color: var(--color-slate-mid); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+  .tab-btn:hover { background: var(--color-warm-parchment); color: var(--color-deep-ink); }
+  .tab-btn.active { background: var(--color-coral-flame); color: var(--color-pure-white); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Two-column layout: vertical subnav (blog-like) + content */
+  .layout { display: grid; grid-template-columns: 240px 1fr; gap: var(--space-5); align-items: start; }
+  .subnav { position: sticky; top: var(--space-4); background: var(--color-pure-white); border: 1px solid var(--color-chalk-surface); border-radius: var(--radius-card); padding: var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+  .subnav-label { font-family: var(--font-pixel); font-size: var(--text-caption); letter-spacing: 0.08em; color: var(--color-mist-body); text-transform: uppercase; padding: var(--space-2) var(--space-3); }
+  .subnav a { display: block; padding: var(--space-2) var(--space-3); border-radius: var(--radius-tag); font-size: var(--text-body-sm); font-weight: 600; color: var(--color-slate-mid); text-decoration: none; cursor: pointer; transition: all 0.15s; }
+  .subnav a:hover { background: var(--color-warm-parchment); color: var(--color-deep-ink); }
+  .subnav a.active { background: var(--color-coral-blush); color: var(--color-ember-deep); }
+  .content { min-width: 0; }
+  .subpage { display: none; }
+  .subpage.active { display: block; }
+
+  /* Cards / sections */
+  .section { background: var(--color-pure-white); border-radius: var(--radius-large); padding: var(--space-8); margin-bottom: var(--space-5); border: 1px solid var(--color-chalk-surface); }
+  .section-pixel { font-family: var(--font-pixel); font-size: var(--text-caption); letter-spacing: 0.08em; color: var(--color-coral-flame); text-transform: uppercase; margin-bottom: var(--space-2); }
+  .section h2 { font-family: var(--font-display); font-size: var(--text-heading-lg); font-weight: 800; color: var(--color-deep-ink); margin-bottom: var(--space-3); }
+  .section h3 { font-family: var(--font-display); font-size: var(--text-heading); font-weight: 700; color: var(--color-deep-ink); margin-top: var(--space-6); margin-bottom: var(--space-3); }
+  .section h4 { font-family: var(--font-display); font-size: var(--text-subheading); font-weight: 600; color: var(--color-deep-ink); margin-top: var(--space-5); margin-bottom: var(--space-2); }
+  .section p { margin-bottom: var(--space-3); color: var(--color-slate-mid); }
+  .section ul, .section ol { padding-left: var(--space-6); margin-bottom: var(--space-4); }
+  .section li { margin-bottom: var(--space-2); color: var(--color-slate-mid); }
+  .section strong { color: var(--color-deep-ink); }
+  .section a { color: var(--color-coral-flame); }
+
+  code { font-family: SF Mono, Monaco, Consolas, monospace; background: var(--color-ghost-white); padding: 2px 8px; border-radius: 6px; font-size: 0.9em; color: var(--color-ember-deep); border: 1px solid var(--color-chalk-surface); }
+  pre { background: var(--color-deep-ink); color: var(--color-pure-white); padding: var(--space-4); border-radius: var(--radius-card); overflow-x: auto; margin: var(--space-3) 0; font-size: var(--text-body-sm); line-height: 1.5; }
+  pre code { background: transparent; border: none; color: var(--color-pure-white); padding: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: var(--space-3) 0; }
+  th { text-align: left; padding: 12px; border-bottom: 2px solid var(--color-chalk-surface); background: var(--color-ghost-white); font-size: var(--text-body-sm); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--color-chalk-surface); color: var(--color-slate-mid); font-size: var(--text-body-sm); vertical-align: top; }
+
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); margin: var(--space-5) 0; }
+  .step-card { background: var(--color-ghost-white); border: 1px solid var(--color-chalk-surface); border-radius: var(--radius-card); padding: var(--space-5); }
+  .step-num { font-family: var(--font-pixel); font-size: var(--text-subheading); color: var(--color-coral-flame); margin-bottom: var(--space-2); }
+  .step-card h4 { margin-top: 0; font-size: var(--text-subheading); }
+  .step-card p { font-size: var(--text-body-sm); margin-bottom: 0; }
+
+  .callout { border-left: 4px solid; padding: var(--space-4) var(--space-5); border-radius: var(--radius-tag); margin: var(--space-4) 0; background: var(--color-ghost-white); }
+  .callout-tip { border-left-color: var(--color-coral-flame); background: var(--color-coral-blush); }
+  .callout-warning { border-left-color: var(--color-amber-signal); background: #fef3c7; }
+  .callout-success { border-left-color: var(--color-leaf-success); background: #d1fae5; }
+  .callout-info { border-left-color: var(--color-slate-mid); background: var(--color-ghost-white); }
+  .callout > strong { color: var(--color-deep-ink); display: block; margin-bottom: var(--space-1); }
+  .callout p { margin-bottom: 0; color: var(--color-ink-charcoal); }
+
+  .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); margin: var(--space-5) 0; }
+  .role-card { background: var(--color-ghost-white); border: 2px solid var(--color-chalk-surface); border-radius: var(--radius-card); padding: var(--space-5); }
+  .role-card .role-emoji { font-size: 28px; margin-bottom: var(--space-2); }
+  .role-card h4 { margin-top: 0; font-size: var(--text-subheading); }
+  .role-card p { font-size: var(--text-body-sm); margin-bottom: 0; }
+
+  .skill-demo { background: linear-gradient(135deg, var(--color-deep-ink) 0%, var(--color-ink-charcoal) 100%); border-radius: var(--radius-large); padding: var(--space-6); color: var(--color-pure-white); margin: var(--space-5) 0; border: 1px solid var(--color-slate-mid); }
+  .skill-demo h4 { color: var(--color-coral-glow); margin-top: 0; font-family: var(--font-pixel); text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--text-body-sm); }
+  .skill-demo .user-line { color: var(--color-coral-glow); font-family: SF Mono, monospace; margin: var(--space-2) 0; font-size: var(--text-body-sm); }
+  .skill-demo .ai-line { color: var(--color-pure-white); opacity: 0.85; font-family: SF Mono, monospace; margin: var(--space-2) 0; padding-left: var(--space-4); border-left: 2px solid var(--color-coral-flame); font-size: var(--text-body-sm); }
+
+  .timeline-event { display: grid; grid-template-columns: 100px 1fr; gap: var(--space-4); padding: var(--space-4) 0; border-bottom: 1px solid var(--color-chalk-surface); }
+  .timeline-event:last-child { border-bottom: none; }
+  .timeline-time { font-family: var(--font-pixel); font-size: var(--text-body-sm); color: var(--color-coral-flame); font-weight: 700; }
+  .timeline-content h4 { margin-top: 0; margin-bottom: var(--space-1); }
+
+  .faq-item { border-bottom: 1px solid var(--color-chalk-surface); padding: var(--space-4) 0; }
+  .faq-q { font-family: var(--font-display); font-weight: 600; color: var(--color-deep-ink); margin-bottom: var(--space-2); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+  .faq-q::after { content: '+'; font-size: var(--text-heading); color: var(--color-coral-flame); transition: transform 0.2s; }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a { display: none; color: var(--color-slate-mid); padding-top: var(--space-2); }
+  .faq-item.open .faq-a { display: block; }
+
+  footer { text-align: center; padding: var(--space-8); color: var(--color-mist-body); font-size: var(--text-body-sm); }
+  footer .pixel { font-family: var(--font-pixel); color: var(--color-coral-flame); }
+
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; }
+    .subnav { position: static; flex-direction: row; flex-wrap: wrap; }
+    .subnav-label { width: 100%; }
+    .hero h1 { font-size: var(--text-heading-lg); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-pixel-label">RESONANCE TECH · NOWA · ONBOARDING</div>
+    <h1>Chào mừng lên team 👋</h1>
+    <p>Mọi thứ bạn cần để bắt đầu: vào <strong>GitHub Org</strong> (nơi lưu code + docs + workflow) và <strong>Knowledge Hub</strong> (shared source of truth cho cả team). Đọc theo thứ tự tab trái → phải.</p>
+  </div>
+</section>
+
+<!-- TOP TABS -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" data-tab="start">🚀 Bắt đầu</button>
+  <button class="tab-btn" data-tab="github">🐙 GitHub Org</button>
+  <button class="tab-btn" data-tab="hub">📚 Knowledge Hub</button>
+</nav>
+
+<!-- ================= TAB A: BẮT ĐẦU ================= -->
+<div class="tab-panel active" id="tab-start">
+  <div class="layout">
+    <aside class="subnav">
+      <div class="subnav-label">Bắt đầu</div>
+      <a class="active" data-sub="start-welcome">Chào mừng</a>
+      <a data-sub="start-checklist">Checklist Ngày 1</a>
+      <a data-sub="start-access">Bạn được cấp gì</a>
+    </aside>
+    <div class="content">
+
+      <div class="subpage active" id="sub-start-welcome">
+        <section class="section">
+          <div class="section-pixel">START HERE</div>
+          <h2>2 hệ thống bạn sẽ dùng mỗi ngày</h2>
+          <p>Resonance Tech làm việc AI-native, PR-based. Có 2 nơi chính:</p>
+          <div class="roles-grid">
+            <div class="role-card">
+              <div class="role-emoji">🐙</div>
+              <h4>GitHub Org <code>nowa-technologies</code></h4>
+              <p>Nơi lưu mọi repo: personal workspace của bạn, repo team, knowledge hub. Tất cả thay đổi đi qua Pull Request. Tab <strong>🐙 GitHub Org</strong> hướng dẫn setup + workflow.</p>
+            </div>
+            <div class="role-card">
+              <div class="role-emoji">📚</div>
+              <h4>NOWA Knowledge Hub</h4>
+              <p>Repo <code>nowa-os-knowledge-hub</code> — shared context cho cả team (product, decisions, meeting notes, partner docs). Pull mỗi sáng, upload final docs bằng skill. Tab <strong>📚 Knowledge Hub</strong>.</p>
+            </div>
+          </div>
+          <div class="callout callout-tip">
+            <strong>💡 Đọc theo thứ tự</strong>
+            <p>Hôm nay: làm xong <strong>Checklist Ngày 1</strong> (tab này) → đọc <strong>GitHub Org</strong> để hiểu workflow → cuối cùng <strong>Knowledge Hub</strong> để biết dùng skill. Không cần nhớ hết — bookmark trang này, quay lại tra khi cần.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-start-checklist">
+        <section class="section">
+          <div class="section-pixel">DAY 1</div>
+          <h2>Checklist ngày đầu tiên</h2>
+          <div class="steps-grid">
+            <div class="step-card"><div class="step-num">01</div><h4>Accept invite + bật 2FA</h4><p>Check email → accept lời mời vào org. Bật 2FA ngay — <strong>bắt buộc</strong>, không có sẽ bị kick tự động. Lưu recovery code offline.</p></div>
+            <div class="step-card"><div class="step-num">02</div><h4>Cài tools</h4><p>Git, VS Code, GitHub CLI (<code>gh</code>). Xem tab GitHub Org → <em>Setup máy</em> cho lệnh từng OS.</p></div>
+            <div class="step-card"><div class="step-num">03</div><h4>Config git + đăng nhập gh</h4><p><code>git config --global user.name/.email</code> (email <code>@resonancetech.co</code>) → <code>gh auth login</code> (chọn SSH).</p></div>
+            <div class="step-card"><div class="step-num">04</div><h4>Clone workspace cá nhân</h4><p><code>git clone git@github.com:nowa-technologies/personal-workspace-&lt;tên&gt;.git</code> — clone được = setup OK.</p></div>
+            <div class="step-card"><div class="step-num">05</div><h4>Clone knowledge hub</h4><p><code>gh repo clone nowa-technologies/nowa-os-knowledge-hub</code>. Mỗi sáng chỉ cần <code>git pull</code>.</p></div>
+            <div class="step-card"><div class="step-num">06</div><h4>Cài Claude Desktop</h4><p>Tải ở <code>claude.ai/download</code>, login email Resonance Tech. Skill <code>/nowa-*</code> auto có sẵn — không cần cài gì.</p></div>
+            <div class="step-card"><div class="step-num">07</div><h4>Watch hub repo</h4><p>Mở repo trên GitHub → <strong>Watch → Custom</strong> → tick Pull requests + Issues. Để nhận noti khi có PR cần review.</p></div>
+            <div class="step-card"><div class="step-num">08</div><h4>Chào team 👋</h4><p>Nhắn vào Telegram team một câu chào — báo bạn đã onboard xong.</p></div>
+          </div>
+          <div class="callout callout-success">
+            <strong>✓ Xong checklist là bạn đã sẵn sàng làm việc.</strong>
+            <p>Chi tiết từng bước nằm ở 2 tab còn lại. Kẹt chỗ nào → ping Grace (Telegram).</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-start-access">
+        <section class="section">
+          <div class="section-pixel">ACCESS</div>
+          <h2>Bạn được cấp gì khi onboard</h2>
+          <table>
+            <thead><tr><th>Thứ</th><th>Chi tiết</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Org membership</strong></td><td>Thành viên <code>nowa-technologies</code> (role member)</td></tr>
+              <tr><td><strong>Team <code>all-staff</code></strong></td><td>Read các shared repo (knowledge hub, agent-skills, org foundation) + push hub theo CODEOWNERS</td></tr>
+              <tr><td><strong>Team chức năng</strong></td><td>Theo vai trò: <code>marketing</code> / <code>design</code> / <code>business-analyst</code> / <code>engineering</code> / <code>hr</code> / <code>customer-support</code></td></tr>
+              <tr><td><strong>Personal workspace</strong></td><td>Repo private <code>personal-workspace-&lt;tên&gt;</code> — bạn là Admin, full control</td></tr>
+              <tr><td><strong>CODEOWNER</strong></td><td>Nếu bạn own 1 workstream trong hub → là người duyệt PR đụng folder đó</td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-info">
+            <strong>ℹ️ Cần thêm access?</strong>
+            <p>Cần vào repo team khác hoặc tạo repo mới → ping Grace. Quên/mất 2FA → email Andy ngay.</p>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================= TAB B: GITHUB ORG ================= -->
+<div class="tab-panel" id="tab-github">
+  <div class="layout">
+    <aside class="subnav">
+      <div class="subnav-label">GitHub Org</div>
+      <a class="active" data-sub="gh-overview">Tổng quan & Teams</a>
+      <a data-sub="gh-setup">Setup máy</a>
+      <a data-sub="gh-permission">Permission model</a>
+      <a data-sub="gh-workflow">Daily workflow</a>
+      <a data-sub="gh-naming">Naming conventions</a>
+      <a data-sub="gh-filerules">File rules</a>
+      <a data-sub="gh-ai">AI workflow</a>
+      <a data-sub="gh-help">Cần help</a>
+    </aside>
+    <div class="content">
+
+      <div class="subpage active" id="sub-gh-overview">
+        <section class="section">
+          <div class="section-pixel">§1 · ORG STRUCTURE</div>
+          <h2>Tổng quan org & teams</h2>
+          <p>Source of truth đầy đủ: <a href="https://github.com/nowa-technologies/.github/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> trong org. Tóm tắt:</p>
+          <pre><code>nowa-technologies/
+├── .github                         ← Org profile + CONTRIBUTING
+├── rt-agent-skills                 ← AI skills (company asset, mọi người read)
+├── rt-organizational-foundation    ← Org info, structure, mission
+├── nowa-os-knowledge-hub           ← NOWA knowledge hub (mọi người read)
+├── personal-workspace-&lt;tên&gt;         ← Workspace cá nhân của bạn (private)
+└── ... (repo team tự tạo theo nhu cầu)</code></pre>
+          <h3>Teams</h3>
+          <table>
+            <thead><tr><th>Team</th><th>Ai</th><th>Quyền</th></tr></thead>
+            <tbody>
+              <tr><td><code>@owners</code></td><td>Andy, Grace</td><td>Full admin</td></tr>
+              <tr><td><code>@marketing</code></td><td>Marketing</td><td>Own marketing repos</td></tr>
+              <tr><td><code>@design</code></td><td>Design</td><td>Own design repos</td></tr>
+              <tr><td><code>@business-analyst</code></td><td>BA</td><td>Own BA repos</td></tr>
+              <tr><td><code>@engineering</code></td><td>Dev</td><td>Own eng repos</td></tr>
+              <tr><td><code>@hr</code></td><td>HR</td><td>Own HR repos</td></tr>
+              <tr><td><code>@customer-support</code></td><td>CS</td><td>Own CS workstream/repos</td></tr>
+              <tr><td><code>@all-staff</code></td><td>Toàn company</td><td>Read shared repos</td></tr>
+            </tbody>
+          </table>
+          <h3>Personal workspace</h3>
+          <p>Mỗi member có <code>personal-workspace-&lt;tên&gt;</code>: private, bạn là Admin. <strong>Dùng cho</strong> drafts, notes, research, AI working memory. <strong>KHÔNG dùng cho</strong> project có deliverable (code, app) → tạo repo riêng <code>{tên}-{team}-{project}</code>. Lý do: AI agent đọc workspace như personal context store, không expect parse code structure.</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-setup">
+        <section class="section">
+          <div class="section-pixel">SETUP · ~15 PHÚT (1 LẦN)</div>
+          <h2>Setup máy local</h2>
+          <p>Full: <a href="https://github.com/nowa-technologies/.github/blob/main/SETUP.md">SETUP.md</a>.</p>
+          <h3>1. Accept invite + 2FA</h3>
+          <ul>
+            <li>Accept lời mời trong email vào org <code>nowa-technologies</code></li>
+            <li>Bật 2FA: GitHub Settings → Password and authentication → Two-factor. <strong>Bắt buộc</strong> — không có sẽ bị kick.</li>
+            <li>Dùng app Authy / Google Authenticator / 1Password. <strong>Lưu recovery code</strong> offline.</li>
+          </ul>
+          <h3>2. Cài tools</h3>
+          <pre><code># macOS
+brew install git
+brew install --cask visual-studio-code
+brew install gh
+
+# Windows: tải git-scm.com, code.visualstudio.com, cli.github.com
+# Linux (Debian/Ubuntu): sudo apt install git gh ; sudo snap install code --classic</code></pre>
+          <h3>3. Config git</h3>
+          <pre><code>git config --global user.name "Your Full Name"
+git config --global user.email "yourname@resonancetech.co"</code></pre>
+          <h3>4. Đăng nhập gh CLI</h3>
+          <pre><code>gh auth login
+# → GitHub.com → SSH → Generate new SSH key → Login with web browser
+gh auth status   # verify</code></pre>
+          <h3>5. Test access</h3>
+          <pre><code>git clone git@github.com:nowa-technologies/personal-workspace-&lt;tên&gt;.git
+# clone được = OK ✓</code></pre>
+          <div class="callout callout-warning">
+            <strong>⚠️ Troubleshooting nhanh</strong>
+            <p><code>Permission denied (publickey)</code> → <code>gh auth refresh -s admin:public_key</code>. Mất 2FA app → dùng recovery code, hoặc liên hệ Andy/Grace ngay.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-permission">
+        <section class="section">
+          <div class="section-pixel">§2 · PERMISSION — BDFL</div>
+          <h2>Permission model</h2>
+          <p>Mỗi repo có <strong>1 task owner</strong> = người duy nhất merge được vào <code>main</code>. Bạn có thể tạo PR vào bất kỳ repo nào bạn có access, nhưng chỉ task owner mới merge.</p>
+          <table>
+            <thead><tr><th>Loại repo</th><th>Task owner</th></tr></thead>
+            <tbody>
+              <tr><td>Personal workspace</td><td>Bạn</td></tr>
+              <tr><td>Personal project <code>{tên}-{team}-{project}</code></td><td>Bạn</td></tr>
+              <tr><td>Team repos</td><td>Team lead / PIC project</td></tr>
+              <tr><td>Shared repos (hub, agent-skills)</td><td><code>@owners</code> (Andy, Grace)</td></tr>
+            </tbody>
+          </table>
+          <p>Trên personal workspace/project, bạn là task owner → tự merge mọi PR của mình (hoặc push thẳng main).</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-workflow">
+        <section class="section">
+          <div class="section-pixel">§3 · DAILY WORKFLOW</div>
+          <h2>Standard PR flow</h2>
+          <pre><code>git checkout main && git pull
+git checkout -b &lt;team&gt;/&lt;tên&gt;/&lt;short-description&gt;   # vd: mkt/amy/audience-fintech-lp
+# ... làm việc ...
+git add . && git commit -m "Add ..."
+git push -u origin &lt;team&gt;/&lt;tên&gt;/&lt;short-description&gt;
+# → tạo Pull Request trên GitHub web → đợi task owner review + merge
+git checkout main && git pull          # sau khi merged</code></pre>
+          <h3>Trong personal workspace</h3>
+          <p>Free style hơn: push thẳng <code>main</code> được (bạn là task owner), commit không cần quá formal.</p>
+          <h3>Quick edit qua web</h3>
+          <p>Thay đổi nhỏ (typo): mở file trên GitHub → pencil icon → sửa → "Create a new branch and start a pull request".</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-naming">
+        <section class="section">
+          <div class="section-pixel">§4 · NAMING CONVENTIONS</div>
+          <h2>Quy tắc đặt tên</h2>
+          <h3>Repo</h3>
+          <p>Pattern: <code>{scope}-{team-or-aspect}-{project}[-{time}]</code></p>
+          <ul>
+            <li><strong>scope</strong>: <code>rt-</code> (RT-wide), <code>nowa-</code>, <code>teampal-</code>, <code>cross-</code>, hoặc <code>{tên}-</code> (personal)</li>
+            <li><strong>team</strong>: <code>mkt</code>, <code>des</code>, <code>ba</code>, <code>dev</code>, <code>hr</code> — hoặc <strong>aspect</strong>: <code>org</code>, <code>os</code>, <code>fin</code>, <code>legal</code>, <code>tools</code></li>
+            <li><strong>project</strong>: kebab-case · <strong>time</strong>: optional (<code>2026</code>, <code>2026-q2</code>)</li>
+          </ul>
+          <table>
+            <thead><tr><th>Repo</th><th>Phân tích</th></tr></thead>
+            <tbody>
+              <tr><td><code>nowa-mkt-pre-launch-ads-2026</code></td><td>NOWA × mkt × pre-launch-ads × 2026</td></tr>
+              <tr><td><code>nowa-os-knowledge-hub</code></td><td>NOWA × org-level × knowledge-hub</td></tr>
+              <tr><td><code>nowa-os-customer-support</code></td><td>NOWA × os aspect × customer-support</td></tr>
+              <tr><td><code>grace-pm-tool</code></td><td>Grace personal × pm × tool</td></tr>
+            </tbody>
+          </table>
+          <h3>Branch</h3>
+          <p><code>{team}/{tên}/{short-description}</code> — kebab-case, max 5 từ, không underscore/camelCase. Optional type: <code>{team}/{tên}/{feature|fix|content|docs|refactor|experiment}/{desc}</code>.</p>
+          <h3>Commit</h3>
+          <p><code>{Verb imperative} {what}</code> — vd "Add Q3 launch plan", "Fix typo in guideline". Không "updated stuff", "WIP".</p>
+          <h3>File & folder</h3>
+          <p>Folder + file <code>.md</code>: kebab-case. Special: <code>README.md</code> uppercase. Code: theo convention ngôn ngữ.</p>
+          <h3>Repo mới vs folder?</h3>
+          <p><strong>Default: folder.</strong> Tạo repo mới khi: team khác own, campaign time-bounded năm sau, asset chung nhiều project dùng, internal tool standalone, personal project có deliverable.</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-filerules">
+        <section class="section">
+          <div class="section-pixel">§5 · FILE RULES</div>
+          <h2>Commit gì / không commit gì</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4);">
+            <div class="callout callout-success">
+              <strong>✓ Cho phép</strong>
+              <p>Text (.md/.txt/.csv/.json/.yaml) · Code (.html/.css/.js/.py/.tsx) · Ảnh web optimized &lt;10MB · <code>.env.example</code>, <code>.gitignore</code></p>
+            </div>
+            <div class="callout callout-warning">
+              <strong>✗ KHÔNG commit</strong>
+              <p>Secrets (.env, API keys, certs) · File &gt;10MB / video / audio → Drive · Raw design (.psd/.ai/.sketch) → Drive · OS junk</p>
+            </div>
+          </div>
+          <div class="callout callout-tip">
+            <strong>🚨 Lỡ commit secret?</strong>
+            <p>Báo <code>@owners</code> (Andy + Grace) <strong>NGAY LẬP TỨC</strong> + rotate credentials.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-ai">
+        <section class="section">
+          <div class="section-pixel">§7 · AI WORKFLOW</div>
+          <h2>Làm việc với AI</h2>
+          <ul>
+            <li><strong>Tag <code>@claude</code> trong PR</strong> (sắp enable) — comment "<code>@claude review this change</code>" → Claude review inline.</li>
+            <li><strong>Claude.ai qua MCP</strong> — Settings → MCP connectors → GitHub → auth org → chat trực tiếp với repo.</li>
+            <li><strong>Local Claude Code</strong> — clone repo, mở Claude Code, làm việc, commit, push.</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-gh-help">
+        <section class="section">
+          <div class="section-pixel">§8 · HELP</div>
+          <h2>Khi nào hỏi ai</h2>
+          <table>
+            <thead><tr><th>Tình huống</th><th>Channel</th></tr></thead>
+            <tbody>
+              <tr><td>Git command lỗi, workflow không rõ</td><td>Telegram, hoặc hỏi Andy/Grace</td></tr>
+              <tr><td>Cần access repo mới</td><td>Ping Grace</td></tr>
+              <tr><td>Quên 2FA → bị lock</td><td>Email Andy</td></tr>
+              <tr><td>Lỡ commit secret</td><td><strong>NGAY</strong> ping Andy + Grace</td></tr>
+              <tr><td>Suggest convention/process</td><td>Tạo PR vào <code>CONTRIBUTING.md</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================= TAB C: KNOWLEDGE HUB ================= -->
+<div class="tab-panel" id="tab-hub">
+  <div class="layout">
+    <aside class="subnav">
+      <div class="subnav-label">Knowledge Hub</div>
+      <a class="active" data-sub="hub-quickstart">Quick Start</a>
+      <a data-sub="hub-promote">Upload files</a>
+      <a data-sub="hub-meeting">Meeting notes</a>
+      <a data-sub="hub-archive">Archive</a>
+      <a data-sub="hub-navigate">Find things</a>
+      <a data-sub="hub-review">Review PRs</a>
+      <a data-sub="hub-faq">FAQ</a>
+    </aside>
+    <div class="content">
+
+      <div class="subpage active" id="sub-hub-quickstart">
+        <section class="section">
+          <div class="section-pixel">DAILY RHYTHM</div>
+          <h2>Hub: setup once, work daily</h2>
+          <p>Hub <code>nowa-os-knowledge-hub</code> là shared source of truth. Pull mỗi sáng để AI agents của bạn có context mới; upload final docs bằng skill (zero Git knowledge).</p>
+          <div class="timeline">
+            <div class="timeline-event"><div class="timeline-time">Sáng</div><div class="timeline-content"><h4>☕ <code>git pull</code> hub</h4><p><code>cd ~/Documents/nowa-os-knowledge-hub && git pull</code>. Không cần đọc gì gấp — chỉ pull là xong.</p></div></div>
+            <div class="timeline-event"><div class="timeline-time">Xong việc</div><div class="timeline-content"><h4>📤 Upload final output</h4><p>Final file (contract, spec, design) → <code>/nowa-hub-promote</code>. Meeting note → <code>/nowa-meeting-note</code>.</p></div></div>
+            <div class="timeline-event"><div class="timeline-time">Trước 11PM</div><div class="timeline-content"><h4>💬 Daily update Telegram</h4><p>Post "✅ Done today". Lệnh tổng hợp chạy tự động ~1AM — post trước đó kẻo bị miss tới ngày sau.</p></div></div>
+          </div>
+          <h3>3 skill (auto-deploy, không cần cài)</h3>
+          <div class="roles-grid">
+            <div class="role-card"><div class="role-emoji">📤</div><h4>/nowa-hub-promote</h4><p>Upload 1 file standalone vào đúng folder + naming + PR.</p></div>
+            <div class="role-card"><div class="role-emoji">📝</div><h4>/nowa-meeting-note</h4><p>Transcript → post-note + reconcile trackers + PR.</p></div>
+            <div class="role-card"><div class="role-emoji">📦</div><h4>/nowa-hub-archive</h4><p>Move file superseded/expired sang archive repo + stub.</p></div>
+          </div>
+          <h3>Owner cập nhật gì?</h3>
+          <p>Mỗi workstream có owner theo <code>.github/CODEOWNERS</code>. Owner giữ workstream up-to-date: meeting notes (qua skill), partner artefacts/contracts (qua promote), workstream <code>README.md</code>. Trackers (series-log, active-tracker, decisions) <strong>tự sinh</strong> qua meeting-note reconcile — owner double-check trước khi commit.</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-promote">
+        <section class="section">
+          <div class="section-pixel">SKILL · /nowa-hub-promote</div>
+          <h2>Upload files lên hub</h2>
+          <p>Đưa 1 file standalone (contract, spec, design, report) vào đúng hub folder — naming chuẩn + update README/partner-index + mở PR. <strong>Zero Git knowledge.</strong></p>
+          <div class="skill-demo">
+            <h4>Example</h4>
+            <div class="user-line">/nowa-hub-promote ~/Desktop/Permill_MSA_signed.pdf</div>
+            <div class="ai-line">🔍 Detected: contract for Permill Hardware</div>
+            <div class="ai-line">💡 → workstreams/permill-hardware/contracts/2026-06-12_permill-msa-signed.pdf — Confirm? [Y/n]</div>
+            <div class="user-line">y</div>
+            <div class="ai-line">✓ Naming + copied + README updated + PR #42 created (CODEOWNERS notified)</div>
+          </div>
+          <p>Nêu rõ folder để khỏi detect sai: <code>/nowa-hub-promote &lt;file&gt; --to workstreams/permill-hardware/contracts/</code>.</p>
+          <div class="callout callout-warning">
+            <strong>⚠️ KHÔNG dùng promote cho</strong>
+            <p>Drafts WIP (giữ local) · Sensitive (equity, shareholder, finance → ping Grace, route <code>-private</code>) · Media &gt;50MB (Drive) · <code>decisions.md</code> (tự cập nhật qua reconcile).</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-meeting">
+        <section class="section">
+          <div class="section-pixel">SKILL · /nowa-meeting-note</div>
+          <h2>Xử lý transcript họp</h2>
+          <p>Đưa transcript (paste text, hoặc path <code>.srt</code>/<code>.txt</code>/<code>.md</code> — audio không nhận). Một meeting một lần.</p>
+          <div class="skill-demo">
+            <h4>Example</h4>
+            <div class="user-line">/nowa-meeting-note ~/Downloads/permill_biweekly.srt</div>
+            <div class="ai-line">🔍 Series: Permill Hardware · 🌐 Bilingual EN-CN</div>
+            <div class="ai-line">✓ Post-note + reconciled 4 trackers + rollups + HTML preview (UNCOMMITTED)</div>
+            <div class="ai-line">🔗 Preview links + change summary ↓ (gõ commit / ready)</div>
+            <div class="user-line">ready</div>
+            <div class="ai-line">🚀 PR opened</div>
+          </div>
+          <p>Skill viết hết vào local hub clone <strong>UNCOMMITTED</strong> + render preview rồi DỪNG. Bạn review (attendees, decisions, action items, bilingual) → gõ <code>commit</code>/<code>ready</code> → skill mở PR. Nói rõ series khi gọi để khỏi detect nhầm.</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-archive">
+        <section class="section">
+          <div class="section-pixel">SKILL · /nowa-hub-archive</div>
+          <h2>Archive file hết hiệu lực</h2>
+          <p>File không còn valid (expired contract, superseded design, closed workstream) → <code>/nowa-hub-archive &lt;path&gt;</code>: move sang archive repo (mirror structure) + để <code>.archived.md</code> stub trong hub + mở 2 PR cross-linked.</p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4);">
+            <div class="callout callout-success"><strong>✓ Archive</strong><p>Expired contracts · superseded designs/specs · closed workstreams · vendor files cũ</p></div>
+            <div class="callout callout-warning"><strong>✗ Đừng archive</strong><p><code>decisions.md</code> · <code>README.md</code> · <code>_playbook/</code> · active content · processed meeting notes</p></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-navigate">
+        <section class="section">
+          <div class="section-pixel">NAVIGATION</div>
+          <h2>Tìm cái cần trong hub</h2>
+          <table>
+            <thead><tr><th>Tìm gì</th><th>Mở</th></tr></thead>
+            <tbody>
+              <tr><td>Product spec (PRD)</td><td><code>product/PRD.md</code></td></tr>
+              <tr><td>Design system</td><td><code>product/DESIGN.md</code></td></tr>
+              <tr><td>Meeting notes Permill</td><td><code>workstreams/permill-hardware/meeting-notes/post-notes/</code></td></tr>
+              <tr><td>Decisions 1 workstream</td><td><code>workstreams/{ws}/decisions.md</code></td></tr>
+              <tr><td>Decisions cross-workstream</td><td><code>status/nowa-overall-decisions.md</code></td></tr>
+              <tr><td>Naming rules</td><td><code>_playbook/01_file-naming.md</code></td></tr>
+              <tr><td>Tracker schema + ID</td><td><code>_playbook/tracker-structure-spec.md</code></td></tr>
+              <tr><td>Ai own workstream X</td><td><code>workstreams/{X}/README.md</code> + <code>.github/CODEOWNERS</code></td></tr>
+            </tbody>
+          </table>
+          <h3>4 repo hub family</h3>
+          <ul>
+            <li><code>nowa-os-knowledge-hub</code> — hub chính, main work</li>
+            <li><code>nowa-os-knowledge-hub-archive</code> — file superseded/expired (mirror structure)</li>
+            <li><code>nowa-os-knowledge-hub-private</code> — sensitive (equity, finance), restricted</li>
+            <li><code>rt-agent-skills</code> — plugin repo deliver skill <code>/nowa-*</code> (auto-deploy)</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-review">
+        <section class="section">
+          <div class="section-pixel">REVIEWER</div>
+          <h2>Review PRs</h2>
+          <p>Khi member promote file, PR auto-tag CODEOWNERS theo path. Bạn nhận noti → review trong <strong>24h</strong> business.</p>
+          <h3>Checklist review</h3>
+          <ul>
+            <li><strong>Right destination?</strong> Path đúng workstream + sub-folder (outbound/inbound/contracts)</li>
+            <li><strong>Naming?</strong> <code>YYYY-MM-DD_slug.ext</code>, partner-original suffix nếu inbound</li>
+            <li><strong>Sensitive routing?</strong> Equity/shareholder/finance → flag, nên ở repo <code>-private</code></li>
+            <li><strong>Bilingual (Permill)?</strong> EN-CN cả 2 section</li>
+            <li><strong>Content reasonable?</strong> Quick scan (meeting note có decisions/actions; contract có chữ ký)</li>
+          </ul>
+          <p>Decision: ✅ Approve / 💬 Comment / 🛑 Request changes → merge (squash + delete branch) khi clean.</p>
+        </section>
+      </div>
+
+      <div class="subpage" id="sub-hub-faq">
+        <section class="section">
+          <div class="section-pixel">FAQ</div>
+          <h2>Câu hỏi thường gặp</h2>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Cần biết Git để dùng hub không?</div><div class="faq-a">Không. Skill <code>/nowa-*</code> xử lý hết Git. Chỉ cần <code>git pull</code> mỗi sáng.</div></div>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Notion có bị thay bởi hub không?</div><div class="faq-a">Không. Notion vẫn canonical cho Tasks DB + Master Timeline. Hub mirror snapshot mỗi sáng.</div></div>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Sáng phải đọc gì trong hub?</div><div class="faq-a">Không gì gấp. Chỉ <code>git pull</code> để agents có context mới.</div></div>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Có vault cá nhân, cần promote hết lên hub không?</div><div class="faq-a">Không. Chỉ promote file đã final/approved (contract signed, meeting note processed, PRD merged).</div></div>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Sensitive file routing như nào?</div><div class="faq-a">KHÔNG promote lên shared hub. Ping Grace → route <code>nowa-os-knowledge-hub-private</code>.</div></div>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">File &gt;50MB upload đâu?</div><div class="faq-a">Không up hub. Drive → share link qua promote với 1-line note.</div></div>
+          <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Skill lỗi — fallback?</div><div class="faq-a">GitHub Web UI: repo → "Add file" → upload tay (cần biết destination + naming). Hoặc ping Grace.</div></div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>📁 <span class="pixel">RESONANCE · TECH · ONBOARDING</span></p>
+  <p style="margin-top:8px;">Living doc — cập nhật khi org/hub đổi rule. Nguồn: <code>.github/CONTRIBUTING.md</code> · <code>SETUP.md</code> · hub <code>_playbook/</code></p>
+</footer>
+
+</div>
+
+<script>
+  // Top tabs (horizontal — major sections)
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + target).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+  // Vertical subnav (blog-like pages within a section)
+  document.querySelectorAll('.subnav a').forEach(link => {
+    link.addEventListener('click', () => {
+      const panel = link.closest('.tab-panel');
+      const target = link.dataset.sub;
+      panel.querySelectorAll('.subnav a').forEach(a => a.classList.remove('active'));
+      panel.querySelectorAll('.subpage').forEach(p => p.classList.remove('active'));
+      link.classList.add('active');
+      document.getElementById('sub-' + target).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+</script>
+</body>
+</html>

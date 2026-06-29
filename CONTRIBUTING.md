@@ -49,6 +49,7 @@ nowa-technologies/
 | `@business-analyst` | BA team | Owner BA repos |
 | `@engineering` | Dev team | Owner eng repos |
 | `@hr` | HR team | Owner HR repos |
+| `@customer-support` | CS team | Owner CS workstream/repos |
 | `@all-staff` | Toàn company | Read shared repos |
 
 ### 1.3 Personal workspace
@@ -402,4 +403,4 @@ Convention này là **living document**. Nếu thấy chỗ nào cần improve:
 ---
 
 Owner: `@nowa-technologies/owners`
-Last updated: 2026-05-19
+Last updated: 2026-06-29
