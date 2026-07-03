@@ -50,6 +50,7 @@ nowa-technologies/
 | `@engineering` | Dev team | Owner eng repos |
 | `@hr` | HR team | Owner HR repos |
 | `@customer-support` | CS team | Owner CS workstream/repos |
+| `@product-manager` | PM team | Own product/pawcast PM repos |
 | `@all-staff` | Toàn company | Read shared repos |
 
 ### 1.3 Personal workspace
