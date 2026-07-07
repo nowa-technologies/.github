@@ -154,7 +154,7 @@ Cho thay đổi nhỏ (typo, edit 1 dòng):
 
 | Level | Options | Required |
 |---|---|---|
-| Scope (level 1) | `rt-` (RT-wide), `nowa-`, `teampal-`, `cross-`, **`{firstname}-`** (personal project) | ✓ |
+| Scope (level 1) | `rt-` (RT-wide), `nowa-`, `pawcast-` (Pawcast product, AiFoundri pet-camera), `teampal-`, `cross-`, **`{firstname}-`** (personal project) | ✓ |
 | Team abbrev (level 2) | `mkt`, `des`, `ba`, `dev`, `hr` | ✓ (hoặc aspect) |
 | Aspect (level 2 nếu không team) | `org`, `os`, `fin`, `legal`, `tools` | ✓ (hoặc team) |
 | Project (level 3) | kebab-case mô tả | ✓ |
@@ -169,6 +169,7 @@ Cho thay đổi nhỏ (typo, edit 1 dòng):
 | `nowa-os-knowledge-hub` | NOWA × org-level × knowledge-hub |
 | `nowa-des-brand-guideline` | NOWA × design × brand-guideline (evergreen) |
 | `nowa-os-customer-support` | NOWA × operating system aspect × customer-support |
+| `pawcast-os-knowledge-hub` | Pawcast × org-level × knowledge-hub |
 | `andy-dev-side-tool` | Andy personal × dev × side-tool |
 | `grace-pm-tool` | Grace personal × project management × tool |
 | `cross-mkt-channel-strategy` | Cross-product × marketing × channel-strategy |
